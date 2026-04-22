@@ -145,3 +145,26 @@ void Room::save(std::ofstream& out) const {
         devices[i]->save(out);
     }
 }
+
+std::istream& operator>>(std::istream& in, Room& r) {
+    std::string name, type;
+
+    std::cout << "Room name: ";
+    in >> std::ws;
+    std::getline(in, name);
+
+    std::cout << "Room type: ";
+    std::getline(in, type);
+
+    r.setName(name);
+    r.setType(type);
+
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const Room& r) {
+    out << "Room name: " << r.getName() << '\n';
+    out << "Room type: " << r.getType() << '\n';
+    out << "Number of devices: " << r.getDeviceCount() << '\n';
+    return out;
+}

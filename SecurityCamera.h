@@ -30,4 +30,7 @@ private:
     std::string getType() const override;
     Device* clone() const override;
     void save(std::ofstream& out) const override;
+
+    friend std::istream& operator>>(std::istream& in, SecurityCamera& s);
+    friend std::ostream& operator<<(std::ostream& out, const SecurityCamera& s);
 };

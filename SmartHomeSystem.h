@@ -33,4 +33,7 @@ public:
     void applyAwayMode();
 
     void saveToFile(const std::string& fileName) const;
+
+    friend std::istream& operator>>(std::istream& in, SmartHomeSystem& s);
+    friend std::ostream& operator<<(std::ostream& out, const SmartHomeSystem& s);
 };

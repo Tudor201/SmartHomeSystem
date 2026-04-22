@@ -111,3 +111,55 @@ void SecurityCamera::save(std::ofstream& out) const {
     out << motionDetected << '\n';
     out << storageUsed << '\n';
 }
+
+std::istream& operator>>(std::istream& in, SecurityCamera& s) {
+    std::string name, roomName;
+    bool powerOn, recording, motionDetected;
+    double energyUsage;
+    int storageUsed;
+
+    std::cout << "Name: ";
+    in >> std::ws;
+    std::getline(in, name);
+
+    std::cout << "Room name: ";
+    std::getline(in, roomName);
+
+    std::cout << "Power on (1/0): ";
+    in >> powerOn;
+
+    std::cout << "Energy usage: ";
+    in >> energyUsage;
+
+    std::cout << "Recording (1/0): ";
+    in >> recording;
+
+    std::cout << "Motion detected (1/0): ";
+    in >> motionDetected;
+
+    std::cout << "Storage used: ";
+    in >> storageUsed;
+
+    s.setName(name);
+    s.setRoomName(roomName);
+    if (powerOn) s.turnOn();
+    else s.turnOff();
+    s.setEnergyUsage(energyUsage);
+    s.setRecording(recording);
+    s.setMotionDetected(motionDetected);
+    s.setStorageUsed(storageUsed);
+
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const SecurityCamera& s) {
+    out << "Device type: SecurityCamera\n";
+    out << "Name: " << s.getName() << '\n';
+    out << "Room: " << s.getRoomName() << '\n';
+    out << "Power: " << (s.isOn() ? "On" : "Off") << '\n';
+    out << "Energy usage: " << s.getEnergyUsage() << '\n';
+    out << "Recording: " << (s.isRecording() ? "Yes" : "No") << '\n';
+    out << "Motion detected: " << (s.hasMotionDetected() ? "Yes" : "No") << '\n';
+    out << "Storage used: " << s.getStorageUsed() << '\n';
+    return out;
+}

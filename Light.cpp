@@ -87,3 +87,51 @@ void Light::save(std::ofstream& out) const {
     out << brightness << '\n';
     out << colorMode << '\n';
 }
+
+std::istream& operator>>(std::istream& in, Light& l) {
+    std::string name, roomName, colorMode;
+    bool powerOn;
+    double energyUsage;
+    int brightness;
+
+    std::cout << "Name: ";
+    in >> std::ws;
+    std::getline(in, name);
+
+    std::cout << "Room name: ";
+    std::getline(in, roomName);
+
+    std::cout << "Power on (1/0): ";
+    in >> powerOn;
+
+    std::cout << "Energy usage: ";
+    in >> energyUsage;
+
+    std::cout << "Brightness: ";
+    in >> brightness;
+    in >> std::ws;
+
+    std::cout << "Color mode: ";
+    std::getline(in, colorMode);
+
+    l.setName(name);
+    l.setRoomName(roomName);
+    if (powerOn) l.turnOn();
+    else l.turnOff();
+    l.setEnergyUsage(energyUsage);
+    l.setBrightness(brightness);
+    l.setColorMode(colorMode);
+
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const Light& l) {
+    out << "Device type: Light\n";
+    out << "Name: " << l.getName() << '\n';
+    out << "Room: " << l.getRoomName() << '\n';
+    out << "Power: " << (l.isOn() ? "On" : "Off") << '\n';
+    out << "Energy usage: " << l.getEnergyUsage() << '\n';
+    out << "Brightness: " << l.getBrightness() << '\n';
+    out << "Color mode: " << l.getColorMode() << '\n';
+    return out;
+}

@@ -26,4 +26,7 @@ public:
     std::string getType() const override;
     Device* clone() const override;
     void save(std::ofstream& out) const override;
+
+    friend std::istream& operator>>(std::istream& in, Light& l);
+    friend std::ostream& operator<<(std::ostream& out, const Light& l);
 };

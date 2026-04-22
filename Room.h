@@ -34,4 +34,7 @@ public:
     void applyAwayMode();
 
     void save(std::ofstream& out) const;
+
+    friend std::istream& operator>>(std::istream& in, Room& r);
+    friend std::ostream& operator<<(std::ostream& out, const Room& r);
 };

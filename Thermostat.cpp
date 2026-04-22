@@ -117,3 +117,54 @@ void Thermostat::save(std::ofstream& out) const {
     out << targetTemperature << '\n';
     out << ecoMode << '\n';
 }
+
+std::istream& operator>>(std::istream& in, Thermostat& t) {
+    std::string name, roomName;
+    bool powerOn, ecoMode;
+    double energyUsage, currentTemperature, targetTemperature;
+
+    std::cout << "Name: ";
+    in >> std::ws;
+    std::getline(in, name);
+
+    std::cout << "Room name: ";
+    std::getline(in, roomName);
+
+    std::cout << "Power on (1/0): ";
+    in >> powerOn;
+
+    std::cout << "Energy usage: ";
+    in >> energyUsage;
+
+    std::cout << "Current temperature: ";
+    in >> currentTemperature;
+
+    std::cout << "Target temperature: ";
+    in >> targetTemperature;
+
+    std::cout << "Eco mode (1/0): ";
+    in >> ecoMode;
+
+    t.setName(name);
+    t.setRoomName(roomName);
+    if (powerOn) t.turnOn();
+    else t.turnOff();
+    t.setEnergyUsage(energyUsage);
+    t.setCurrentTemperature(currentTemperature);
+    t.setTargetTemperature(targetTemperature);
+    t.setEcoMode(ecoMode);
+
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const Thermostat& t) {
+    out << "Device type: Thermostat\n";
+    out << "Name: " << t.getName() << '\n';
+    out << "Room: " << t.getRoomName() << '\n';
+    out << "Power: " << (t.isOn() ? "On" : "Off") << '\n';
+    out << "Energy usage: " << t.getEnergyUsage() << '\n';
+    out << "Current temperature: " << t.getCurrentTemperature() << '\n';
+    out << "Target temperature: " << t.getTargetTemperature() << '\n';
+    out << "Eco mode: " << (t.isEcoModeOn() ? "On" : "Off") << '\n';
+    return out;
+}

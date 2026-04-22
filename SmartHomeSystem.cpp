@@ -116,3 +116,21 @@ void SmartHomeSystem::saveToFile(const std::string& fileName) const {
 
     out.close();
 }
+
+std::istream& operator>>(std::istream& in, SmartHomeSystem& s) {
+    std::string homeName;
+
+    std::cout << "Home name: ";
+    in >> std::ws;
+    std::getline(in, homeName);
+
+    s.setHomeName(homeName);
+
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const SmartHomeSystem& s) {
+    out << "Smart home name: " << s.getHomeName() << '\n';
+    out << "Number of rooms: " << s.getRoomCount() << '\n';
+    return out;
+}

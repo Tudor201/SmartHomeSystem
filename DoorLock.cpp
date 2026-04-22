@@ -124,3 +124,55 @@ void DoorLock::save(std::ofstream& out) const {
     out << failedAttempts << '\n';
     out << batteryLevel << '\n';
 }
+
+std::istream& operator>>(std::istream& in, DoorLock& d) {
+    std::string name, roomName;
+    bool powerOn, locked;
+    double energyUsage;
+    int failedAttempts, batteryLevel;
+
+    std::cout << "Name: ";
+    in >> std::ws;
+    std::getline(in, name);
+
+    std::cout << "Room name: ";
+    std::getline(in, roomName);
+
+    std::cout << "Power on (1/0): ";
+    in >> powerOn;
+
+    std::cout << "Energy usage: ";
+    in >> energyUsage;
+
+    std::cout << "Locked (1/0): ";
+    in >> locked;
+
+    std::cout << "Failed attempts: ";
+    in >> failedAttempts;
+
+    std::cout << "Battery level: ";
+    in >> batteryLevel;
+
+    d.setName(name);
+    d.setRoomName(roomName);
+    if (powerOn) d.turnOn();
+    else d.turnOff();
+    d.setEnergyUsage(energyUsage);
+    d.setLocked(locked);
+    d.setFailedAttempts(failedAttempts);
+    d.setBatteryLevel(batteryLevel);
+
+    return in;
+}
+
+std::ostream& operator<<(std::ostream& out, const DoorLock& d) {
+    out << "Device type: DoorLock\n";
+    out << "Name: " << d.getName() << '\n';
+    out << "Room: " << d.getRoomName() << '\n';
+    out << "Power: " << (d.isOn() ? "On" : "Off") << '\n';
+    out << "Energy usage: " << d.getEnergyUsage() << '\n';
+    out << "Locked: " << (d.isLocked() ? "Yes" : "No") << '\n';
+    out << "Failed attempts: " << d.getFailedAttempts() << '\n';
+    out << "Battery level: " << d.getBatteryLevel() << '\n';
+    return out;
+}
