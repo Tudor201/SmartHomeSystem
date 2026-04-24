@@ -1,8 +1,13 @@
 #include "ElectricalDevice.h"
+#include <stdexcept>
 
 ElectricalDevice::ElectricalDevice() : Device(), powerOn(false), energyUsage(0.0) {}
 
-ElectricalDevice::ElectricalDevice(const std::string& name, const std::string& roomName, bool powerOn, double energyUsage) : Device(name, roomName), powerOn(powerOn), energyUsage(energyUsage) {}
+ElectricalDevice::ElectricalDevice(const std::string& name, const std::string& roomName, bool powerOn, double energyUsage) : Device(name, roomName), powerOn(powerOn), energyUsage(energyUsage) {
+    if (energyUsage < 0) {
+        throw std::runtime_error("Energy usage cannot be negative.");
+    }
+}
 
 ElectricalDevice::ElectricalDevice(const ElectricalDevice &e) : Device(e), powerOn(e.powerOn), energyUsage(e.energyUsage) {}
 
@@ -19,7 +24,12 @@ ElectricalDevice::~ElectricalDevice() {}
 
 bool ElectricalDevice::isOn() const { return powerOn; }
 double ElectricalDevice::getEnergyUsage() const { return energyUsage; }
-void ElectricalDevice::setEnergyUsage(double energyUsage) { this->energyUsage = energyUsage; }
+void ElectricalDevice::setEnergyUsage(double energyUsage) {
+    if (energyUsage < 0) {
+        throw std::runtime_error("Energy usage cannot be negative.");
+    }
+    this->energyUsage = energyUsage;
+}
 void ElectricalDevice::turnOn() { powerOn = true; }
 void ElectricalDevice::turnOff() { powerOn = false; }
 void ElectricalDevice::togglePower() { powerOn = !powerOn; }

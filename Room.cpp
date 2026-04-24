@@ -64,6 +64,11 @@ void Room::addDevice(Device* device) {
     if (device == nullptr) {
         throw std::invalid_argument("Cannot add a null device");
     }
+
+    if (findDeviceByName(device->getName()) != nullptr) {
+        throw std::runtime_error("Device already exists in this room.");
+    }
+
     devices.push_back(device);
 }
 

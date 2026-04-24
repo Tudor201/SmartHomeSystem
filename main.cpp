@@ -47,19 +47,20 @@ int main() {
     }
 
     do {
-        showMenu();
-        std::cin >> option;
+        try{
+            showMenu();
+            std::cin >> option;
 
-        if (std::cin.fail()) {
-            std::cin.clear();
+            if (std::cin.fail()) {
+                std::cin.clear();
+                std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::cout << "Invalid input.\n";
+                continue;
+            }
+
             std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            std::cout << "Invalid input.\n";
-            continue;
-        }
 
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
-        try {
             if (option == 1) {
                 std::string roomName, roomType;
 
@@ -129,6 +130,13 @@ int main() {
 
                     std::cout << "Enter brightness (0-100): ";
                     std::cin >> brightness;
+
+                    if (std::cin.fail()) {
+                        std::cin.clear();
+                        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                        throw std::runtime_error("Invalid light data.");
+                    }
+
                     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                     std::cout << "Enter color mode: ";
@@ -292,6 +300,13 @@ int main() {
                         int lightOption;
                         std::cout << "\n1. Reading mode\n2. Night mode\n3. Toggle power\nOption: ";
                         std::cin >> lightOption;
+
+                        if (std::cin.fail()) {
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            throw std::runtime_error("Invalid light option.");
+                        }
+
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                         if (lightOption == 1) light->setReadingMode();
@@ -303,6 +318,13 @@ int main() {
                         int thOption;
                         std::cout << "\n1. Toggle eco mode\n2. Adjust temperature\n3. Toggle power\nOption: ";
                         std::cin >> thOption;
+
+                        if (std::cin.fail()) {
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            throw std::runtime_error("Invalid thermostat option.");
+                        }
+
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                         if (thOption == 1) thermostat->toggleEcoMode();
@@ -314,6 +336,13 @@ int main() {
                         int camOption;
                         std::cout << "\n1. Toggle recording\n2. Detect motion\n3. Clear storage\n4. Toggle power\nOption: ";
                         std::cin >> camOption;
+
+                        if (std::cin.fail()) {
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            throw std::runtime_error("Invalid camera option.");
+                        }
+
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                         if (camOption == 1) camera->toggleRecording();
@@ -326,6 +355,13 @@ int main() {
                         int lockOption;
                         std::cout << "\n1. Lock door\n2. Unlock door\n3. Register failed attempt\n4. Reset failed attempts\n5. Toggle power\nOption: ";
                         std::cin >> lockOption;
+
+                        if (std::cin.fail()) {
+                            std::cin.clear();
+                            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                            throw std::runtime_error("Invalid lock option.");
+                        }
+
                         std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
 
                         if (lockOption == 1) lock->lockDoor();

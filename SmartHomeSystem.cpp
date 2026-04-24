@@ -36,6 +36,10 @@ void SmartHomeSystem::setHomeName(const std::string& homeName) {
 }
 
 void SmartHomeSystem::addRoom(const Room& room) {
+    if (findRoomByName(room.getName()) != nullptr) {
+        throw std::runtime_error("Room already exists.");
+    }
+
     rooms.push_back(room);
 }
 
