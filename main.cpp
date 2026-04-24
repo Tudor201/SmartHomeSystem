@@ -19,7 +19,7 @@ void showMenu() {
     std::cout << "8. Control a device from a room\n";
     std::cout << "9. Remove room\n";
     std::cout << "10. Remove device from room\n";
-    std::cout << "Load from file\n";
+    std::cout << "11. Load from file\n";
     std::cout << "0. Exit\n";
     std::cout << "Choose an option: ";
 }
@@ -35,7 +35,7 @@ void showDeviceControlMenu() {
 
 int main() {
     SmartHomeSystem home;
-    int option;
+    int option = -1;
 
     try {
         home.loadFromFile("defaults.txt");

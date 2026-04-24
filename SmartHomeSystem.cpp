@@ -140,7 +140,7 @@ void SmartHomeSystem::loadFromFile(const std::string& fileName) {
     std::getline(in, newHomeName);
 
     in >> roomCount;
-    if (in.fail()) {
+    if (in.fail() || roomCount < 0) {
         throw std::runtime_error("Invalid room count in file.");
     }
 
@@ -157,7 +157,7 @@ void SmartHomeSystem::loadFromFile(const std::string& fileName) {
         std::getline(in, roomType);
 
         in >> deviceCount;
-        if (in.fail()) {
+        if (in.fail() || deviceCount < 0) {
             throw std::runtime_error("Invalid device count in file.");
         }
 
@@ -287,7 +287,12 @@ void SmartHomeSystem::loadFromFile(const std::string& fileName) {
                 throw std::runtime_error("Unknown device type in file.");
             }
 
-            room.addDevice(device);
+            try {
+                room.addDevice(device);
+            } catch (...) {
+                delete device;
+                throw;
+            }
         }
 
         newRooms.push_back(room);
