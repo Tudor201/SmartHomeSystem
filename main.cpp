@@ -19,6 +19,7 @@ void showMenu() {
     std::cout << "8. Control a device from a room\n";
     std::cout << "9. Remove room\n";
     std::cout << "10. Remove device from room\n";
+    std::cout << "Load from file\n";
     std::cout << "0. Exit\n";
     std::cout << "Choose an option: ";
 }
@@ -33,8 +34,17 @@ void showDeviceControlMenu() {
 }
 
 int main() {
-    SmartHomeSystem home("My Smart Home");
+    SmartHomeSystem home;
     int option;
+
+    try {
+        home.loadFromFile("defaults.txt");
+        std::cout << "Default configuration loaded from defaults.txt.\n";
+    }
+    catch (const std::exception& e) {
+        std::cout << "Could not load defaults.txt: " << e.what() << '\n';
+        std::cout << "Starting with an empty smart home.\n";
+    }
 
     do {
         showMenu();
@@ -367,6 +377,15 @@ int main() {
 
                 room->removeDeviceByIndex(index - 1);
                 std::cout << "Device removed successfully.\n";
+            }
+            else if (option == 11) {
+                std::string fileName;
+
+                std::cout << "Enter file name: ";
+                std::getline(std::cin, fileName);
+
+                home.loadFromFile(fileName);
+                std::cout << "\nRoom loaded successfully.\n";
             }
             else if (option == 0) {
                 std::cout << "Exiting...\n";

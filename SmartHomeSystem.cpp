@@ -1,7 +1,13 @@
 #include "SmartHomeSystem.h"
+#include "Light.h"
+#include "Thermostat.h"
+#include "SecurityCamera.h"
+#include "DoorLock.h"
+
 #include <iostream>
 #include <fstream>
 #include <stdexcept>
+#include <limits>
 
 SmartHomeSystem::SmartHomeSystem() : homeName("Home1") {}
 
@@ -115,6 +121,178 @@ void SmartHomeSystem::saveToFile(const std::string& fileName) const {
     }
 
     out.close();
+}
+
+void SmartHomeSystem::loadFromFile(const std::string& fileName) {
+    std::ifstream in(fileName);
+
+    if (!in) {
+        throw std::runtime_error("File could not be opened.");
+    }
+
+    std::string newHomeName;
+    int roomCount;
+
+    std::getline(in, newHomeName);
+
+    in >> roomCount;
+    if (in.fail()) {
+        throw std::runtime_error("Invalid room count in file.");
+    }
+
+    in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+    std::vector<Room> newRooms;
+
+    for (int i = 0; i < roomCount; i++) {
+        std::string roomName;
+        std::string roomType;
+        int deviceCount;
+
+        std::getline(in, roomName);
+        std::getline(in, roomType);
+
+        in >> deviceCount;
+        if (in.fail()) {
+            throw std::runtime_error("Invalid device count in file.");
+        }
+
+        in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+        Room room(roomName, roomType);
+
+        for (int j = 0; j < deviceCount; j++) {
+            std::string deviceType;
+            std::string deviceName;
+            std::string deviceRoomName;
+            bool powerOn;
+            double energyUsage;
+
+            std::getline(in, deviceType);
+            std::getline(in, deviceName);
+            std::getline(in, deviceRoomName);
+
+            in >> powerOn;
+            in >> energyUsage;
+
+            if (in.fail()) {
+                throw std::runtime_error("Invalid basic device data in file.");
+            }
+
+            in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+            Device* device = nullptr;
+
+            if (deviceType == "Light") {
+                int brightness;
+                std::string colorMode;
+
+                in >> brightness;
+                if (in.fail()) {
+                    throw std::runtime_error("Invalid light data in file.");
+                }
+
+                in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+                std::getline(in, colorMode);
+
+                device = new Light(
+                    deviceName,
+                    deviceRoomName,
+                    powerOn,
+                    energyUsage,
+                    brightness,
+                    colorMode
+                );
+            }
+            else if (deviceType == "Thermostat") {
+                double currentTemperature;
+                double targetTemperature;
+                bool ecoMode;
+
+                in >> currentTemperature;
+                in >> targetTemperature;
+                in >> ecoMode;
+
+                if (in.fail()) {
+                    throw std::runtime_error("Invalid thermostat data in file.");
+                }
+
+                in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                device = new Thermostat(
+                    deviceName,
+                    deviceRoomName,
+                    powerOn,
+                    energyUsage,
+                    currentTemperature,
+                    targetTemperature,
+                    ecoMode
+                );
+            }
+            else if (deviceType == "SecurityCamera") {
+                bool recording;
+                bool motionDetected;
+                int storageUsed;
+
+                in >> recording;
+                in >> motionDetected;
+                in >> storageUsed;
+
+                if (in.fail()) {
+                    throw std::runtime_error("Invalid security camera data in file.");
+                }
+
+                in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                device = new SecurityCamera(
+                    deviceName,
+                    deviceRoomName,
+                    powerOn,
+                    energyUsage,
+                    recording,
+                    motionDetected,
+                    storageUsed
+                );
+            }
+            else if (deviceType == "DoorLock") {
+                bool locked;
+                int failedAttempts;
+                int batteryLevel;
+
+                in >> locked;
+                in >> failedAttempts;
+                in >> batteryLevel;
+
+                if (in.fail()) {
+                    throw std::runtime_error("Invalid door lock data in file.");
+                }
+
+                in.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+
+                device = new DoorLock(
+                    deviceName,
+                    deviceRoomName,
+                    powerOn,
+                    energyUsage,
+                    locked,
+                    failedAttempts,
+                    batteryLevel
+                );
+            }
+            else {
+                throw std::runtime_error("Unknown device type in file.");
+            }
+
+            room.addDevice(device);
+        }
+
+        newRooms.push_back(room);
+    }
+
+    homeName = newHomeName;
+    rooms = newRooms;
+
+    in.close();
 }
 
 std::istream& operator>>(std::istream& in, SmartHomeSystem& s) {
