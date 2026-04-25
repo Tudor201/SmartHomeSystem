@@ -57,13 +57,7 @@ void Light::setNightMode() {
 }
 
 void Light::displayStatus() const {
-    std::cout << "Device type: Light\n";
-    std::cout << "Name: " << getName() << '\n';
-    std::cout << "Room: " << getRoomName() << '\n';
-    std::cout << "Power: " << (isOn() ? "On" : "Off") << '\n';
-    std::cout << "Energy usage: " << getEnergyUsage() << '\n';
-    std::cout << "Brightness: " << brightness << '\n';
-    std::cout << "Color mode: " << colorMode << '\n';
+    std::cout<<*this;
 }
 
 void Light::interact() {

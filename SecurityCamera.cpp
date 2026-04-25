@@ -79,14 +79,7 @@ void SecurityCamera::clearStorage() {
 }
 
 void SecurityCamera::displayStatus() const {
-    std::cout << "Device type: SecurityCamera\n";
-    std::cout << "Name: " << getName() << '\n';
-    std::cout << "Room: " << getRoomName() << '\n';
-    std::cout << "Power: " << (isOn() ? "On" : "Off") << '\n';
-    std::cout << "Energy usage: " << getEnergyUsage() << '\n';
-    std::cout << "Recording: " << (recording ? "Yes" : "No") << '\n';
-    std::cout << "Motion detected: " << (motionDetected ? "Yes" : "No") << '\n';
-    std::cout << "Storage used: " << storageUsed << '\n';
+    std::cout<<*this;
 }
 
 void SecurityCamera::interact() {

@@ -85,14 +85,7 @@ void Thermostat::adjustTemperature() {
 }
 
 void Thermostat::displayStatus() const {
-    std::cout << "Device type: Thermostat\n";
-    std::cout << "Name: " << getName() << '\n';
-    std::cout << "Room: " << getRoomName() << '\n';
-    std::cout << "Power: " << (isOn() ? "On" : "Off") << '\n';
-    std::cout << "Energy usage: " << getEnergyUsage() << '\n';
-    std::cout << "Current temperature: " << currentTemperature << '\n';
-    std::cout << "Target temperature: " << targetTemperature << '\n';
-    std::cout << "Eco mode: " << (ecoMode ? "On" : "Off") << '\n';
+    std::cout<<*this;
 }
 
 void Thermostat::interact() {

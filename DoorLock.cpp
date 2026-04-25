@@ -88,14 +88,7 @@ void DoorLock::resetFailedAttempts() {
 }
 
 void DoorLock::displayStatus() const {
-    std::cout << "Device type: DoorLock\n";
-    std::cout << "Name: " << getName() << '\n';
-    std::cout << "Room: " << getRoomName() << '\n';
-    std::cout << "Power: " << (isOn() ? "On" : "Off") << '\n';
-    std::cout << "Energy usage: " << getEnergyUsage() << '\n';
-    std::cout << "Locked: " << (locked ? "Yes" : "No") << '\n';
-    std::cout << "Failed attempts: " << failedAttempts << '\n';
-    std::cout << "Battery level: " << batteryLevel << '\n';
+    std::cout<<*this;
 }
 
 void DoorLock::interact() {
